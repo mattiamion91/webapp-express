@@ -12,7 +12,7 @@ app.use(express.static('public')); //asset statici di expressjs (middleware)
 app.use(express.json()); //registro body parser per applicaton/json
 
 //rotta index
-app.get('/', (req, res) => { //prima rotta preincipale
+app.get('/api', (req, res) => { //prima rotta preincipale
     res.send('<h1>rotta di home app movies</h1>')
 
     //res.send('<h1>Server del mio blog</h1>') //il type di default é 'html'
