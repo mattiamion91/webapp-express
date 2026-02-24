@@ -14,24 +14,24 @@ function index(req, res) {
 
 //Show
 function show(req, res) {
-    // recuperiamo l'id dall' URL
-    const id = req.params.id
+    // recuper id da param dinamico 
+    const { id } = req.params
     const movieSql = 'SELECT * FROM movies WHERE id = ?';
-    const reviewql = `SELECT T.* FROM reviews JOIN movies ON movies.id = reviews.movie_id WHERE PT.post_id = ?`;
+    const reviewSql = `SELECT * FROM reviews WHERE movie_id = ?`;
     // Eseguiamo la prima query per il post
-    connection.query(postSql, [id], (err, postResults) => {
+    connection.query(movieSql, [id], (err, movieResults) => {
         if (err) return res.status(500).json({ error: 'Database query failed' });
-        if (postResults.length === 0) return res.status(404).json({ error: 'Pizza not found' });
+        if (movieResults.length === 0) return res.status(404).json({ error: 'movie not found' });
         // Recuperiamo il post
-        const post = postResults[0];
-        // Se è andata bene, eseguiamo la seconda query per i tags
-        connection.query(tagsSql, [id], (err, tagsResults) => {
+        const movie = movieResults[0];
+        // Se è andata bene, eseguiamo la seconda query per le reviews
+        connection.query(reviewSql, [id], (err, reviewResults) => {
             if (err) return res.status(500).json({ error: 'Database query failed' });
-            // Aggoiungiamo i tags al post
-            post.tags = tagsResults;
-            res.json(post);
+            // Aggoiungiamo le reviews ai movies
+            movie.reviews = reviewResults;
+            res.json(movie);
         });
     });
 }
 
-module.exports = {index, show}
+module.exports = { index, show }

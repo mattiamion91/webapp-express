@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT;
+const port = 3000;
+
+//importo touter movies
+const movieRouter = require("./routers/movieRouter")
 
 //imporo middleware gestione rotta inseistente
 const notFound = require("./middlewares/notFound");
@@ -18,8 +21,8 @@ app.get('/api', (req, res) => { //prima rotta preincipale
     //res.send('<h1>Server del mio blog</h1>') //il type di default é 'html'
 })
 
-//istanza rotte posts
-//app.use('/posts', rottePosts);
+//istanza rotte movies
+app.use('/api/movies', movieRouter);
 
 //resistro middleware di gestione errore 500 (global)
 app.use(handleErrors)
