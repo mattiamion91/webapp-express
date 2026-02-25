@@ -8,7 +8,14 @@ function index(req, res) {
     // eseguiamo la query!
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: 'Database query failed' });
-        res.json(results);
+        //creo una copia dei risultati con modifica percorso immagine imagepath
+        const movies = results.map(movie => {
+            return {
+                ...movie,
+                image: req.imagePath + movie.image
+            }
+        })
+        res.json(movies);
     });
 }
 
@@ -24,6 +31,8 @@ function show(req, res) {
         if (movieResults.length === 0) return res.status(404).json({ error: 'movie not found' });
         // Recuperiamo il post
         const movie = movieResults[0];
+        //aggiungo path immagine
+        movie.image = req.imagePath + movie.image 
         // Se è andata bene, eseguiamo la seconda query per le reviews
         connection.query(reviewSql, [id], (err, reviewResults) => {
             if (err) return res.status(500).json({ error: 'Database query failed' });

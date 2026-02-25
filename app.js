@@ -1,14 +1,21 @@
 const express = require('express');
 const app = express();
+const cors = require("cors")
 const port = 3000;
 
 //importo touter movies
 const movieRouter = require("./routers/movieRouter")
-
+//importo middleware path immagini
+const imagePath = require("./middlewares/imagePath")
 //imporo middleware gestione rotta inseistente
 const notFound = require("./middlewares/notFound");
 //importo middleware errore 500
 const handleErrors = require("./middlewares/handleErrors")
+
+//middleware cors
+app.use(cors({origin: "http://localhost:5173"}));
+//uso middleware immagePath
+app.use(imagePath);
 
 app.use(express.static('public')); //asset statici di expressjs (middleware)
 
