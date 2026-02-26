@@ -52,7 +52,7 @@ function storeReviews(req, res) {
     const { name, vote, text } = req.body
 
     //preparo la query richesta db
-    const sql = 'INSERT INTO reviews (name, vote, text, movie_id) VALUES (?,?,?,?,)';
+    const sql = 'INSERT INTO reviews (name, vote, text, movie_id) VALUES (?,?,?,?)';
 
     //eseguo la query
     connection.query(sql, [name, vote, text, id], (err, results) => {
@@ -60,7 +60,7 @@ function storeReviews(req, res) {
         res.status(201);
         res.json({
             message: 'recensione aggiunta',
-            id: results.id
+            id: results.insertId
         })
     })
 }
