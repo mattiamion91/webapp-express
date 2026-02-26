@@ -57,11 +57,7 @@ function storeReviews(req, res) {
     //eseguo la query
     connection.query(sql, [name, vote, text, id], (err, results) => {
         if (err) return res.status(500).json({ error: 'database query failed' });
-        res.status(201);
-        res.json({
-            message: 'recensione aggiunta',
-            id: results.insertId
-        })
+        res.status(201).json({ message: 'recensione aggiunta', id: results.insertId })
     })
 }
 
