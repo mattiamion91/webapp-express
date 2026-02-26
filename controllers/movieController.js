@@ -32,7 +32,7 @@ function show(req, res) {
         // Recuperiamo il post
         const movie = movieResults[0];
         //aggiungo path immagine
-        movie.image = req.imagePath + movie.image 
+        movie.image = req.imagePath + movie.image
         // Se è andata bene, eseguiamo la seconda query per le reviews
         connection.query(reviewSql, [id], (err, reviewResults) => {
             if (err) return res.status(500).json({ error: 'Database query failed' });
@@ -43,4 +43,26 @@ function show(req, res) {
     });
 }
 
-module.exports = { index, show }
+//store delle reviews
+function storeReviews(req, res) {
+    //recuero id da params dinamico
+    const { id } = req.params
+
+    //recupero le info dal body della req
+    const { name, vote, text } = req.body
+
+    //preparo la query richesta db
+    const sql = 'INSERT INTO reviews (name, vote, text, movie_id) VALUES (?,?,?,?,)';
+
+    //eseguo la query
+    connection.query(sql, [name, vote, text, id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'database query failed' });
+        res.status(201);
+        res.json({
+            message: 'recensione aggiunta',
+            id: results.id
+        })
+    })
+}
+
+module.exports = { index, show, storeReviews }

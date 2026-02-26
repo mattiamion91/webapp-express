@@ -13,8 +13,8 @@ const movieController = require('./../controllers/movieController');
 router.get('/', movieController.index)
 // show
 router.get('/:id', movieController.show)
-// store
-//router.post('/', movieController.store)
+// store della creazione reviews 
+router.post('/:id/reviews', movieController.storeReviews)
 // update
 //router.put('/:id', movieController.update)
 // modify
